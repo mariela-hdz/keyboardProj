@@ -28,8 +28,6 @@ const TOPICSLIST = [
     ]}
 ]
 
-
-
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -58,11 +56,12 @@ class App extends React.Component {
 class Homepage extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {searchingFor: ""}
     this.searchKeyword = this.searchKeyword.bind(this); 
   }
 
   searchKeyword(keyword) {
-    console.log("this would be using the keyword to make specific searches")
+    this.setState({searchingFor: keyword})
   }
 
   render() {
@@ -71,6 +70,7 @@ class Homepage extends React.Component {
             <SearchBar searchKeyword={this.searchKeyword}/>
             <header className="App-header">
             <h1> Keyboard Shortcuts | At Your Fingertips</h1>
+            <span>{this.state.searchingFor}</span>
             <p>
               Ready to become a keyboard shortcut Wizard?! <br/>
               Take a look at the different topics related to keyboard shortcuts below ✨
@@ -128,7 +128,8 @@ constructor(props) {
   super(props)
   this.state = {typedKeyword: false, value:""}
   this.handleChange = this.handleChange.bind(this);
-  this.onSubmitSearch = this.onSubmitSearch.bind(this)
+  this.onSubmitSearch = this.onSubmitSearch.bind(this);
+  this.searchKeyword = this.props.searchKeyword.bind(this);
 }
 
 handleChange (e) {
@@ -137,7 +138,6 @@ handleChange (e) {
 }
 
 onSubmitSearch() {
-  // console.log(this.state.value === "")
   const typedKeyword = (this.state.value !== "") 
   this.setState({typedKeyword:typedKeyword})
 }
@@ -148,7 +148,7 @@ onSubmitSearch() {
             <input 
               type="text" 
               value={this.state.value}
-              onChange={this.handleChange}
+              onChange={this.searchKeyword}
               placeholder="Search by typing Keyword">
             </input>
             <button onClick={this.onSubmitSearch}>Go</button>
